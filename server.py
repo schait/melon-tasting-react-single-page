@@ -47,6 +47,7 @@ def cancel_reservation(res_id):
     username = reservation.username
     db.session.delete(reservation)
     db.session.commit()
+    # Return remaining reservations to show on page
     reservations_remaining = Reservation.query.filter_by(username=username)
     return jsonify([res.to_dict() for res in reservations_remaining])
 

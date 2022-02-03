@@ -1,11 +1,13 @@
 function Login(props) {
   const {setUsername} = props;
+
+  // ReactRouterDOM hook that lets you route without reloading the page and losing parent state
   let history = ReactRouterDOM.useHistory();
 
   function loginUser(evt) {
     evt.preventDefault();
     setUsername(document.querySelector("#username").value);
-    history.push("/schedule");
+    history.push("/schedule"); // Route to schedule page
   }
   return (
     <React.Fragment>
@@ -23,6 +25,7 @@ function CurrentReservations(props) {
   console.log(username);
   const [reservations, setReservations] = React.useState([]);
 
+  // Get reservations from DB when component loads
   React.useEffect(() => {
     fetch(`/get-current-reservations?username=${username}`)
       .then(response => response.json())
@@ -67,6 +70,8 @@ function AvailableReservations(props) {
   const username = props.username;
   console.log(username);
   const earliest = new Date().toISOString().substring(0,16);
+
+  // ReactRouterDOM hook that lets you route without reloading the page and losing parent state
   let history = ReactRouterDOM.useHistory();
   
   const getAvailableSlots = (evt) => {
@@ -94,8 +99,8 @@ function AvailableReservations(props) {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({username: username, time: time})
       })
-      .then(response => response.text())
-      .then(history.push("/reservations"))
+      .then(response => response.text())  // Response doesn't matter
+      .then(history.push("/reservations"))  // Route to Current Reservations page
   }
 
   return (
@@ -108,12 +113,12 @@ function AvailableReservations(props) {
           </form>
           <table>
           <tbody>
-          {availableTimes.map((time, index) => {
-              return (
-              <tr><td><button key={index} onClick={() => makeReservation(time)}>
-                  {time}
-              </button></td></tr>)
-          })}
+            {availableTimes.map((time, index) => {
+                return (
+                <tr><td><button key={index} onClick={() => makeReservation(time)}>
+                    {time}
+                </button></td></tr>)
+            })}
           </tbody>
           </table>
       </React.Fragment>

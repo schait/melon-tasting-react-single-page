@@ -1,6 +1,7 @@
 function App() {
   const [username, setUsername] = React.useState("");
 
+  // Only show navbar if user is logged in
   const navbar = username ? <Navbar setUsername={setUsername}/> : ""
   return (
     <ReactRouterDOM.BrowserRouter>

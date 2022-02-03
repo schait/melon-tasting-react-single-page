@@ -23,8 +23,8 @@ class Reservation(db.Model):
 
 
 """ Retrieve reservations in within the specified time range """
+# Essentially copied from https://github.com/hackbrightacademy/melon_takehome/blob/main/model.py
 def find_available_reservations(start_time, end_time, username):
-    # Essentially copied from https://github.com/hackbrightacademy/melon_takehome/blob/main/model.py
     
     all_reservations_in_range = db.session.query(Reservation.time).filter(
         Reservation.time.between(start_time, end_time)
