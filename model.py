@@ -35,7 +35,7 @@ def find_available_reservations(start_time, end_time, username):
     }
 
     # of existing reservations, get the ones with the user
-    user_reservations = all_reservations_in_range.filter(Reservation.username == username).all()
+    user_reservations = Reservation.query.filter(Reservation.username==username).all()
     user_reservation_dates = {res.time.date() for res in user_reservations}
 
     # Initialize list for possible times

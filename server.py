@@ -32,7 +32,9 @@ def make_reservation():
     reservation = Reservation(username=username, time=time)
     db.session.add(reservation)
     db.session.commit()
-    return "OK"
+    # Return new list of reservations to show on page
+    updated_reservations = Reservation.query.filter_by(username=username)
+    return jsonify([res.to_dict() for res in updated_reservations])
 
 @app.route('/get-current-reservations')
 def get_current_reservations():

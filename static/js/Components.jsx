@@ -21,25 +21,8 @@ function Login(props) {
 }
 
 function CurrentReservations(props) {
-  const username = props.username;
-  console.log(username);
-  const [reservations, setReservations] = React.useState([]);
-
-  // Get reservations from DB when component loads
-  React.useEffect(() => {
-    fetch(`/get-current-reservations?username=${username}`)
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        setReservations(result);
-      })
-  }, []);
-
-  function cancelReservation(res_id) {
-    fetch(`/cancel-reservation/${res_id}`)
-      .then(response => response.json())
-      .then(newReservations => setReservations(newReservations))
-  }
+  const reservations = props.reservations;
+  const cancelReservation = props.cancelReservation;
 
   const tableData = [];
   for (const res of reservations) {
@@ -66,13 +49,12 @@ function CurrentReservations(props) {
 
 function AvailableReservations(props) {
 
-  const [availableTimes, setAvailableTimes] = React.useState([]);
   const username = props.username;
+  const makeReservation = props.makeReservation;
+  const [availableTimes, setAvailableTimes] = React.useState([]);
+  
   console.log(username);
   const earliest = new Date().toISOString().substring(0,16);
-
-  // ReactRouterDOM hook that lets you route without reloading the page and losing parent state
-  let history = ReactRouterDOM.useHistory();
   
   const getAvailableSlots = (evt) => {
       evt.preventDefault();
@@ -91,16 +73,6 @@ function AvailableReservations(props) {
             console.log(response)
             setAvailableTimes(response);
         })
-  }
-
-  const makeReservation = time => {
-      fetch('/make-reservation', {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username: username, time: time})
-      })
-      .then(response => response.text())  // Response doesn't matter
-      .then(history.push("/reservations"))  // Route to Current Reservations page
   }
 
   return (
