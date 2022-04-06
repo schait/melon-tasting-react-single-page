@@ -27,7 +27,7 @@ function CurrentReservations(props) {
   const tableData = [];
   for (const res of reservations) {
     tableData.push(
-      <tr>
+      <tr key={res.id}>
         <td className="p5">{res.time}</td>
         <td className="p5"><button onClick={() => cancelReservation(res.id)}>Cancel</button></td>
       </tr>);
@@ -87,7 +87,7 @@ function AvailableReservations(props) {
           <tbody>
             {availableTimes.map((time, index) => {
                 return (
-                <tr><td><button key={index} onClick={() => makeReservation(time)}>
+                <tr key={index}><td><button onClick={() => makeReservation(time)}>
                     {time}
                 </button></td></tr>)
             })}

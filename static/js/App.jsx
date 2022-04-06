@@ -35,27 +35,31 @@ function App() {
   }
 
   // Only show navbar if user is logged in
-  const navbar = username ? <Navbar setUsername={setUsername}/> : ""
-  return (
-    <React.Fragment>
-      {navbar}
-      <div className="container-fluid">
-        <ReactRouterDOM.Route exact path="/">
-          <Login setUsername={setUsername} />
-        </ReactRouterDOM.Route>
-        <ReactRouterDOM.Route exact path="/schedule">
-          <AvailableReservations username={username} makeReservation={makeReservation}/>
-        </ReactRouterDOM.Route>
-        <ReactRouterDOM.Route exact path="/reservations">
-          <CurrentReservations 
-            username={username} 
-            reservations={reservations}
-            cancelReservation={cancelReservation}
-          />
-        </ReactRouterDOM.Route>
-      </div>
-    </React.Fragment>
-  );
+  if (username) {
+    return (
+      <React.Fragment>
+        <Navbar setUsername={setUsername}/>
+        <div className="container-fluid">
+          <ReactRouterDOM.Route exact path="/">
+            <Login setUsername={setUsername} />
+          </ReactRouterDOM.Route>
+          <ReactRouterDOM.Route exact path="/schedule">
+            <AvailableReservations username={username} makeReservation={makeReservation}/>
+          </ReactRouterDOM.Route>
+          <ReactRouterDOM.Route exact path="/reservations">
+            <CurrentReservations 
+              username={username} 
+              reservations={reservations}
+              cancelReservation={cancelReservation}
+            />
+          </ReactRouterDOM.Route>
+        </div>
+      </React.Fragment>
+    );
+  }
+  else {
+    return <Login setUsername={setUsername} />;
+  }
 }
 
 ReactDOM.render(
