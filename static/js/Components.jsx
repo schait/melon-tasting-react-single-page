@@ -1,19 +1,27 @@
 function Login(props) {
   const {setUsername} = props;
 
+  // State to store the username value entered into the form
+  const [currentUsername, setCurrentUsername] = React.useState("");
+
   // ReactRouterDOM hook that lets you route without reloading the page and losing parent state
   let history = ReactRouterDOM.useHistory();
 
   function loginUser(evt) {
     evt.preventDefault();
-    setUsername(document.querySelector("#username").value);
+    setUsername(currentUsername);
     history.push("/schedule"); // Route to schedule page
   }
   return (
     <React.Fragment>
       <h1>Login</h1>
       <form onSubmit={loginUser}>
-        Username <input id="username" type="text" name="username" />
+        Username
+        <input 
+          id="username" 
+          type="text" 
+          value={currentUsername} 
+          onChange={(evt) => setCurrentUsername(evt.target.value)}/>
         <input type="submit" />
       </form>
     </React.Fragment>
@@ -52,6 +60,9 @@ function AvailableReservations(props) {
   const username = props.username;
   const makeReservation = props.makeReservation;
   const [availableTimes, setAvailableTimes] = React.useState([]);
+
+  const [currentStartTime, setCurrentStartTime] = React.useState("");
+  const [currentEndTime, setCurrentEndTime] = React.useState("");
   
   console.log(username);
   const earliest = new Date().toISOString().substring(0,16);
@@ -60,8 +71,8 @@ function AvailableReservations(props) {
       evt.preventDefault();
 
       const formData = {
-          "startTime": document.querySelector('[name="start_time"]').value,
-          "endTime": document.querySelector('[name="end_time"]').value,
+          "startTime": currentStartTime,
+          "endTime": currentEndTime,
           "username": username
       };
   
@@ -79,8 +90,20 @@ function AvailableReservations(props) {
       <React.Fragment>
           <h1>Schedule a tasting reservation!</h1>
           <form id="schedule" onSubmit={getAvailableSlots}>
-              Between: <input type="datetime-local" name="start_time" id="datetime_start" min={earliest} />
-              and <input type="datetime-local"  name="end_time" id="datetime_end" min={earliest}/>
+              Between: 
+              <input 
+                type="datetime-local"
+                id="datetime_start"
+                value={currentStartTime}
+                onChange={(evt) => setCurrentStartTime(evt.target.value)}
+                min={earliest} />
+              and 
+              <input 
+                type="datetime-local"
+                id="datetime_end"
+                value={currentEndTime}
+                onChange={(evt) => setCurrentEndTime(evt.target.value)}
+                min={earliest}/>
               <input type="submit" />
           </form>
           <table>
