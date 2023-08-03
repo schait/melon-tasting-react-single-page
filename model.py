@@ -15,7 +15,7 @@ class Reservation(db.Model):
 
     def __repr__(self):
         return f'<Reservation username={self.username} time={self.time}>'
-    
+
     def to_dict(self):
         return {'id': self.reservation_id,
                 'username': self.username,
@@ -25,7 +25,7 @@ class Reservation(db.Model):
 """ Retrieve reservations in within the specified time range """
 # Essentially copied from https://github.com/hackbrightacademy/melon_takehome/blob/main/model.py
 def find_available_reservations(start_time, end_time, username):
-    
+
     all_reservations_in_range = db.session.query(Reservation.time).filter(
         Reservation.time.between(start_time, end_time)
     )
@@ -56,7 +56,7 @@ def find_available_reservations(start_time, end_time, username):
 
 def connect_to_db(app):
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///reservations'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///melon_reservations'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
 
